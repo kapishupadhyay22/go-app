@@ -1,0 +1,32 @@
+services:
+  # Your Go Application
+  app:
+    build: .
+    container_name: go-web-app
+    ports:
+      - "8085:8085"
+    environment:
+      - DB_USER=root
+      - DB_PASSWORD=secret
+      - DB_HOST=db        # Matches the service name below
+      - DB_PORT=3306
+      - DB_NAME=testdb
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  # The Database
+  db:
+    image: mysql:8.0
+    container_name: go-mysql-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=testdb
+    ports:
+      - "3306:3306" # Optional: Only if you need to access DB from host tools (e.g., Workbench/DBeaver)
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

@@ -1,0 +1,14 @@
+export DB_USER=gouser
+export DB_PASSWORD=gopassword
+export DB_HOST=127.0.0.1
+export DB_PORT=3306
+export DB_NAME=api_db
+
+DB running command :
+docker run -d --name mysql-api-db \                                          
+  -p 3306:3306 \
+  -e MYSQL_ROOT_PASSWORD=rootpassword \
+  -e MYSQL_DATABASE=api_db \
+  -e MYSQL_USER=gouser \
+  -e MYSQL_PASSWORD=gopassword \
+  mysql:latest
